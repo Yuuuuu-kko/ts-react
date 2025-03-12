@@ -3,6 +3,11 @@
     {
       "id": "y91",
       "title": "title",
+      "completed": true
+    },
+    {
+      "id": "c8e57335-3e62-48ce-afd5-10695b7df6dd",
+      "title": "TypeScript 뭔소리고 이게",
       "completed": false
     }
   ]
