@@ -8,7 +8,7 @@ type ToggleTodo = Omit<Todo, "title">;
 function App() {
   const [todoList, setTodoList] = useState<Todo[]>([]); // todolist 받아오기
   useEffect(() => {
-    getTodos().then((data) => setTodoList(data));
+    getTodos().then((data) => setTodoList(data.data));
   }, []);
 
   const [title, setTitle] = useState("");
