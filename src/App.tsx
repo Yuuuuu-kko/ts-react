@@ -6,18 +6,20 @@ import { getTodos, type Todo } from "./test";
 type ToggleTodo = Omit<Todo, "title">;
 
 function App() {
-  const [todoList, setTodoList] = useState<Todo[]>([]); // todolist 받아오기
+  // Todo 목록 상태 저장
+  const [todoList, setTodoList] = useState<Todo[]>([]);
+  //  마운트 시 todos 가져오기
   useEffect(() => {
     getTodos().then((data) => setTodoList(data.data));
   }, []);
-
+  // 입력 값 상태
   const [title, setTitle] = useState("");
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
   };
 
-  // Create //
+  // CREATE 새로운 Todo 추가
   const handleAddTodo = () => {
     if (title === "") {
       return;
@@ -44,10 +46,10 @@ function App() {
       method: "DELETE",
     });
 
-    setTodoList((prev) => prev.filter((todo) => todo.id !== id)); // setTodos에 이전값에서 우리가 넣어준 아이디와 다른 친구들만 지우는걸로 업데이트
+    setTodoList((prev) => prev.filter((todo) => todo.id !== id)); // setTodos에 이전값에서 우리가 넣어준 아이디와 다른 친구들만 지우는걸로 업데이트 // UI에서도 즉시 반영
   };
 
-  // Update(complete값을 true로 만들고자한다) //
+  // Update(complete값을 true로 만들고자한다) // 완료 상태 변경
   const handleToggleTodo = async ({ id, completed }: ToggleTodo) => {
     await fetch(`http://localhost:3000/todos/${id}`, {
       method: "PATCH",
@@ -56,6 +58,7 @@ function App() {
       }),
     });
 
+    // UI에서도 즉시 반영
     setTodoList((prev) =>
       prev.map((todo) => {
         if (todo.id === id) {
@@ -81,11 +84,13 @@ function App() {
     </>
   );
 
+  // TodoList Props 정의
   type TodoListProps = {
     todoList: Todo[];
     onDeleteClick: (id: Todo["id"]) => void;
     onToggleClick: (toggleTodo: ToggleTodo) => void;
   };
+  // Todo 목록 컴포넌트
   function TodoList({ todoList, onDeleteClick, onToggleClick }: TodoListProps) {
     return (
       <>
@@ -104,10 +109,12 @@ function App() {
   }
 
   // 여기 type TodoItemProps = Todo; 까지 delete핸들러가 넘어와야한다 기존식을 바꾸어보자
+  // TodoItem Props 정의
   type TodoItemProps = Todo & {
     onDeleteClick: (id: Todo["id"]) => void;
     onToggleClick: (toggleTodo: ToggleTodo) => void;
   };
+  // 단일 Todo 아이템 컴포넌트
   function TodoItem({
     id,
     title,
